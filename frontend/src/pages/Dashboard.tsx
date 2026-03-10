@@ -78,6 +78,7 @@ export default function Dashboard() {
       {/* Charts */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
 
+        {/* Bar chart */}
         <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
           <h2 className="text-base font-semibold text-gray-900 dark:text-white mb-4">Income vs Expenses — Last 6 Months</h2>
           {barChartData.every(d => d.Income === 0 && d.Expenses === 0) ? (
@@ -90,7 +91,7 @@ export default function Dashboard() {
                 <YAxis tick={{ fontSize: 12, fill: '#6b7280' }} />
                 <Tooltip
                   contentStyle={{ backgroundColor: '#1f2937', border: 'none', borderRadius: '8px', color: '#f9fafb' }}
-                  formatter={(value: number) => [`$${value.toFixed(2)}`, '']}
+                  formatter={(value) => [`$${Number(value).toFixed(2)}`, '']}
                 />
                 <Bar dataKey="Income"   fill="#10b981" radius={[4,4,0,0]} />
                 <Bar dataKey="Expenses" fill="#ef4444" radius={[4,4,0,0]} />
@@ -99,6 +100,7 @@ export default function Dashboard() {
           )}
         </div>
 
+        {/* Pie chart */}
         <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
           <h2 className="text-base font-semibold text-gray-900 dark:text-white mb-4">Spending by Category</h2>
           {pieData.length === 0 ? (
@@ -113,7 +115,7 @@ export default function Dashboard() {
                   cx="50%"
                   cy="50%"
                   outerRadius={80}
-                  label={({ categoryName, percent }) => `${categoryName} ${(percent * 100).toFixed(0)}%`}
+                  label={({ name, percent }) => `${name} ${((percent ?? 0) * 100).toFixed(0)}%`}
                   labelLine={false}
                 >
                   {pieData.map((entry, i) => <Cell key={i} fill={entry.color} />)}
@@ -121,7 +123,7 @@ export default function Dashboard() {
                 <Legend formatter={value => <span style={{ color: '#6b7280', fontSize: 12 }}>{value}</span>} />
                 <Tooltip
                   contentStyle={{ backgroundColor: '#1f2937', border: 'none', borderRadius: '8px', color: '#f9fafb' }}
-                  formatter={(value: number) => [`$${value.toFixed(2)}`, '']}
+                  formatter={(value) => [`$${Number(value).toFixed(2)}`, '']}
                 />
               </PieChart>
             </ResponsiveContainer>
@@ -141,7 +143,10 @@ export default function Dashboard() {
                 <div key={budget.id}>
                   <div className="flex items-center justify-between mb-1">
                     <div className="flex items-center gap-2">
-                      <div className="w-6 h-6 rounded-full flex items-center justify-center text-white text-xs font-bold" style={{ backgroundColor: budget.category.color }}>
+                      <div
+                        className="w-6 h-6 rounded-full flex items-center justify-center text-white text-xs font-bold"
+                        style={{ backgroundColor: budget.category.color }}
+                      >
                         {budget.category.icon || budget.category.name[0].toUpperCase()}
                       </div>
                       <span className="text-sm font-medium text-gray-700 dark:text-gray-300">{budget.category.name}</span>
@@ -155,7 +160,10 @@ export default function Dashboard() {
                     </span>
                   </div>
                   <div className="w-full bg-gray-100 dark:bg-gray-700 rounded-full h-2">
-                    <div className={`h-2 rounded-full transition-all ${over ? 'bg-red-500' : 'bg-indigo-500'}`} style={{ width: `${pct}%` }} />
+                    <div
+                      className={`h-2 rounded-full transition-all ${over ? 'bg-red-500' : 'bg-indigo-500'}`}
+                      style={{ width: `${pct}%` }}
+                    />
                   </div>
                 </div>
               );
@@ -181,7 +189,9 @@ export default function Dashboard() {
                     {tx.category?.icon || (tx.type === 'INCOME' ? '💰' : '💸')}
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-gray-900 dark:text-white">{tx.description || tx.category?.name || tx.type}</p>
+                    <p className="text-sm font-medium text-gray-900 dark:text-white">
+                      {tx.description || tx.category?.name || tx.type}
+                    </p>
                     <p className="text-xs text-gray-400 dark:text-gray-500">{tx.date}</p>
                   </div>
                 </div>
