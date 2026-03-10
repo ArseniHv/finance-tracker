@@ -40,7 +40,7 @@ Built with **Spring Boot 3.5**, **React 18 + TypeScript**, **PostgreSQL 16**, an
 
 ### Run with Docker Compose
 ```bash
-git clone https://github.com/YOUR_USERNAME/finance-tracker.git
+git clone https://github.com/ArseniHv/finance-tracker.git
 cd finance-tracker
 docker compose up --build
 ```
